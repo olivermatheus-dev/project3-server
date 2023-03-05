@@ -47,7 +47,7 @@ tabRouter.post("/create", isAuth, attachCurrentUser, async (req, res) => {
 //get all abaixo
 tabRouter.get("/all-tabs", async (req, res) => {
   try {
-    const allTabs = await TabModel.find();
+    const allTabs = await TabModel.find().populate("authorId");
 
     return res.status(201).json(allTabs);
   } catch (err) {
