@@ -78,6 +78,22 @@ userRouter.post("/login", async (req, res) => {
   }
 });
 
+userRouter.put("/update", isAuth, attachCurrentUser, async (req, res) => {
+  try {
+    const user = req.currentUser;
+
+    const userUpdated = await UserModel.findByIdAndUpdate(
+      user._id,
+      { user, ...req.body },
+      { new: true, runValidators: true }
+    );
+    return res.status(200).json(userUpdated);
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json(error);
+  }
+});
+
 userRouter.get("/profile", isAuth, attachCurrentUser, async (req, res) => {
   try {
     const user = req.currentUser;
