@@ -47,7 +47,10 @@ tabRouter.post("/create", isAuth, attachCurrentUser, async (req, res) => {
 //get all abaixo
 tabRouter.get("/all-tabs", async (req, res) => {
   try {
-    const allTabs = await TabModel.find().populate("authorId");
+    const allTabs = await TabModel.find().populate({
+      path: "authorId",
+      select: "-passwordHash",
+    });
 
     return res.status(201).json(allTabs);
   } catch (err) {
@@ -59,7 +62,11 @@ tabRouter.get("/all-tabs", async (req, res) => {
 //get details
 tabRouter.get("/details/:tabId", async (req, res) => {
   try {
-    const tabDetails = await TabModel.findById(req.params.tabId);
+    const tabDetails = await TabModel.findById(req.params.tabId).populate({
+      path: "authorId",
+      select: "-passwordHash",
+    });
+
     if (tabDetails.commentsId.length) {
       tabDetails = await TabModel.findById(req.params.tabId).populate(
         "commentsId"
