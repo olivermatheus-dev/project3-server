@@ -21,8 +21,6 @@ userRouter.post("/sign-up", async (req, res) => {
       return res.status(400).json({ msg: "Senha invalida." });
     }
 
-    // COMEÇA O PROCESSO DE CRIPTOGRAFAR A SENHA
-
     const salt = await bcrypt.genSalt(SALT_ROUNDS);
     console.log("SALT:", salt);
 
@@ -39,6 +37,7 @@ userRouter.post("/sign-up", async (req, res) => {
     return res.status(201).json(createdUser);
   } catch (err) {
     console.log(err);
+
     return res.status(500).json(err);
   }
 });
