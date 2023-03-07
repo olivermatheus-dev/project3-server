@@ -101,8 +101,11 @@ userRouter.get(
   async (req, res) => {
     try {
       // const user = req.currentUser;
-      const user = await UserModel.findOne({ username: req.params.username });
-      // delete updatedUser._doc.passwordHash;
+      const user = await UserModel.findOne({
+        username: req.params.username,
+      }).populate("tabsId");
+
+      delete user._doc.passwordHash;
 
       return res.status(200).json(user);
     } catch (err) {
