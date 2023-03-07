@@ -62,16 +62,12 @@ tabRouter.get("/all-tabs", async (req, res) => {
 //get details
 tabRouter.get("/details/:tabId", async (req, res) => {
   try {
-    const tabDetails = await TabModel.findById(req.params.tabId).populate({
-      path: "authorId",
-      select: "-passwordHash",
-    });
-
-    if (tabDetails.commentsId.length) {
-      tabDetails = await TabModel.findById(req.params.tabId).populate(
-        "commentsId"
-      );
-    }
+    const tabDetails = await TabModel.findById(req.params.tabId)
+      .populate({
+        path: "authorId",
+        select: "-passwordHash",
+      })
+      .populate("commentsId");
 
     return res.status(201).json(tabDetails);
   } catch (err) {
