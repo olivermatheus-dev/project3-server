@@ -103,7 +103,10 @@ userRouter.get(
       // const user = req.currentUser;
       const user = await UserModel.findOne({
         username: req.params.username,
-      }).populate("tabsId");
+      })
+        .populate("tabsId")
+        .populate("following")
+        .populate("follower");
 
       delete user._doc.passwordHash;
 
