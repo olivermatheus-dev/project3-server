@@ -21,8 +21,6 @@ userRouter.post("/sign-up", async (req, res) => {
       return res.status(400).json({ msg: "Senha invalida." });
     }
 
-    // COMEÇA O PROCESSO DE CRIPTOGRAFAR A SENHA
-
     const salt = await bcrypt.genSalt(SALT_ROUNDS);
     console.log("SALT:", salt);
 
@@ -39,6 +37,7 @@ userRouter.post("/sign-up", async (req, res) => {
     return res.status(201).json(createdUser);
   } catch (err) {
     console.log(err);
+
     return res.status(500).json(err);
   }
 });
@@ -62,6 +61,7 @@ userRouter.post("/login", async (req, res) => {
 
       return res.status(200).json({
         user: {
+          username: user.username,
           name: user.name,
           email: user.email,
           _id: user._id,
@@ -94,17 +94,23 @@ userRouter.put("/update", isAuth, attachCurrentUser, async (req, res) => {
   }
 });
 
-userRouter.get("/profile", isAuth, attachCurrentUser, async (req, res) => {
-  try {
-    const user = req.currentUser;
-    // delete updatedUser._doc.passwordHash;
+userRouter.get(
+  "/profile/:username",
+  isAuth,
+  attachCurrentUser,
+  async (req, res) => {
+    try {
+      // const user = req.currentUser;
+      const user = await UserModel.findOne({ username: req.params.username });
+      // delete updatedUser._doc.passwordHash;
 
-    return res.status(200).json(user);
-  } catch (err) {
-    console.log(err);
-    return res.status(500).json(err);
+      return res.status(200).json(user);
+    } catch (err) {
+      console.log(err);
+      return res.status(500).json(err);
+    }
   }
-});
+);
 
 userRouter.put("/", isAuth, attachCurrentUser, async (req, res) => {
   try {
