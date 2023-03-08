@@ -7,6 +7,7 @@ import { tabRouter } from "./routes/tab.routes.js";
 import { commentRouter } from "./routes/comment.routes.js";
 import { followRouter } from "./routes/follow.routes.js";
 import { uploadImgRouter } from "./routes/upload.routes.js";
+import { likeRouter } from "./routes/like.routes.js";
 
 dotenv.config(); //essa configuração permite usarmos as variáveis de ambiente que setamos no .env
 
@@ -27,6 +28,7 @@ app.use("/tab", tabRouter);
 app.use("/comment", commentRouter);
 app.use("/follow", followRouter);
 app.use("/upload", uploadImgRouter);
+app.use("/like", likeRouter);
 
 app.listen(Number(process.env.PORT), () => {
   console.log(`Server up and running at port ${process.env.PORT}`);
