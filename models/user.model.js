@@ -20,8 +20,13 @@ const userSchema = new Schema(
         "https://res.cloudinary.com/df6axr8vg/image/upload/v1677976689/ceostab/file_hbheje.png",
     },
     tabsFavorited: [{ type: Schema.Types.ObjectId, ref: "Tab" }],
-    following: [{ type: Schema.Types.ObjectId, ref: "User" }], //adicionado recentemente
+    tabsLiked: [{ type: Schema.Types.ObjectId, ref: "Tab" }],
+    following: [{ type: Schema.Types.ObjectId, ref: "User" }],
     follower: [{ type: Schema.Types.ObjectId, ref: "User" }],
+    aboutMe: { type: String, minlength: 0, maxlength: 200 },
+    externalURL: { type: String },
+    seniority: { type: String },
+    specialization: { type: String },
   },
   { timestamps: true }
 );
