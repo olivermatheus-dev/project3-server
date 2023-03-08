@@ -20,6 +20,7 @@ const userSchema = new Schema(
         "https://res.cloudinary.com/df6axr8vg/image/upload/v1677976689/ceostab/file_hbheje.png",
     },
     tabsFavorited: [{ type: Schema.Types.ObjectId, ref: "Tab" }],
+    tabsLiked: [{ type: Schema.Types.ObjectId, ref: "Tab" }],
     following: [{ type: Schema.Types.ObjectId, ref: "User" }], //adicionado recentemente
     follower: [{ type: Schema.Types.ObjectId, ref: "User" }],
   },
