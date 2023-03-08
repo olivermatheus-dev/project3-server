@@ -1,65 +1,67 @@
 import express from "express";
 import attachCurrentUser from "../middlewares/attachCurrentUser.js";
 import isAuth from "../middlewares/isAuth.js";
+import { TabModel } from "../models/tab.model.js";
 import { UserModel } from "../models/user.model.js";
 
 const likeRouter = express.Router();
 
 likeRouter.put(
-  "/add/:idUserToFollow",
+  "/add/:tabIdToLike",
   isAuth,
   attachCurrentUser,
   async (req, res) => {
     try {
-      let user = req.currentUser;
-      let userToFollow = UserModel.findById(req.params.idUserToFollow);
-      if (user.following.includes(req.params.idUserToFollow)) {
-        return res.status(500).json("Você já segue essa pessoa!");
+      const user = req.currentUser;
+
+      if (user.tabsLiked.includes(req.params.tabIdToLike)) {
+        return res.status(500).json("Você já curtiu esse tab!");
       }
 
-      userToFollow = await UserModel.findByIdAndUpdate(
-        { _id: req.params.idUserToFollow },
-        { $push: { follower: user._id } },
-        { new: true, runValidators: true }
-      );
-      user = await UserModel.findByIdAndUpdate(
+      await UserModel.findByIdAndUpdate(
         { _id: user._id },
-        { $push: { following: userToFollow._id } },
+        { $push: { tabsLiked: req.params.tabIdToLike } },
         { new: true, runValidators: true }
       );
-      return res.status(200).json(userToFollow);
+      await TabModel.findByIdAndUpdate(
+        { _id: req.params.tabIdToLike },
+        { $push: { likesUserId: user._id } },
+        { new: true, runValidators: true }
+      );
+      return res.status(200).json("Tab curtido com sucesso!");
     } catch (err) {
       console.log(err);
-      return res.status(500).json("Deu erro no follow, irmão");
+      return res.status(500).json("Deu erro no like, irmão");
     }
   }
 );
+
 likeRouter.put(
-  "/remove/:idUserToStopFollow",
+  "/remove/:tabIdToLike",
   isAuth,
   attachCurrentUser,
   async (req, res) => {
     try {
-      let user = req.currentUser;
-      let userToStopFollow = UserModel.findById(req.params.idUserToStopFollow);
-      if (user.following.includes(req.params.idUserToStopFollow)) {
-        userToStopFollow = await UserModel.findByIdAndUpdate(
-          { _id: req.params.idUserToStopFollow },
-          { $pull: { follower: user._id } },
-          { new: true, runValidators: true }
-        );
+      const user = req.currentUser;
 
-        user = await UserModel.findByIdAndUpdate(
-          { _id: user._id },
-          { $pull: { following: req.params.idUserToStopFollow } },
-          { new: true, runValidators: true }
-        );
-        return res.status(200).json(userToStopFollow);
+      if (!user.tabsLiked.includes(req.params.tabIdToLike)) {
+        return res.status(500).json("Você já não curte esse tab!");
       }
-      return res.status(404).json("Você já não segue esse usuário!");
+
+      await UserModel.findByIdAndUpdate(
+        { _id: user._id },
+        { $pull: { tabsLiked: req.params.tabIdToLike } },
+        { new: true, runValidators: true }
+      );
+      await TabModel.findByIdAndUpdate(
+        { _id: req.params.tabIdToLike },
+        { $pull: { likesUserId: user._id } },
+        { new: true, runValidators: true }
+      );
+      return res.status(200).json("Tab descurtido com sucesso!");
     } catch (err) {
       console.log(err);
-      return res.status(500).json("Erro ao parar de seguir!");
+      return res.status(500).json("Deu erro no dislike, irmão");
     }
   }
 );
