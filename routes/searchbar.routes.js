@@ -11,6 +11,7 @@ searchbarRouter.get("/:term", async (req, res) => {
       $or: [
         { title: { $regex: term, $options: "i" } },
         { category: { $regex: term, $options: "i" } },
+        { tags: { $regex: term, $options: "i" } },
       ],
     });
 
