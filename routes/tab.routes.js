@@ -67,7 +67,13 @@ tabRouter.get("/details/:tabId", async (req, res) => {
         path: "authorId",
         select: "-passwordHash",
       })
-      .populate("commentsId");
+      .populate({
+        path: "commentsId",
+        populate: {
+          path: "authorId",
+          select: "-passwordHash",
+        },
+      });
 
     return res.status(201).json(tabDetails);
   } catch (err) {

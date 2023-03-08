@@ -8,7 +8,7 @@ const tabSchema = new Schema(
     commentsId: [{ type: Schema.Types.ObjectId, ref: "Comment" }],
     favoriteUserId: [{ type: Schema.Types.ObjectId, ref: "User" }], //depois usaremos a propriedade size para contabilizar os likes
     likesUserId: [{ type: Schema.Types.ObjectId, ref: "User" }], //depois usaremos a propriedade size para contabilizar os likes
-    category: { type: String, default: "Sem Categoria" },
+    category: { type: String, default: "Outros" },
     imageURL: { type: String, default: "Sem Imagem" }, //definiremos na rota de criação do tab (fazer o if)
     iconURL: { type: String, default: "Sem Icone" }, //definiremos na rota de criação do tab (fazer o if)
 
