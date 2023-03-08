@@ -11,7 +11,7 @@ const tabSchema = new Schema(
     category: { type: String, default: "Outros" },
     imageURL: { type: String, default: "Sem Imagem" }, //definiremos na rota de criação do tab (fazer o if)
     iconURL: { type: String, default: "Sem Icone" }, //definiremos na rota de criação do tab (fazer o if)
-
+    tags: { type: String, default: "" },
     statusVisibility: { type: Boolean, default: true },
   },
   { timestamps: true }
