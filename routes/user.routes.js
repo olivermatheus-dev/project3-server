@@ -42,18 +42,55 @@ userRouter.post("/sign-up", async (req, res) => {
   }
 });
 
+// userRouter.post("/login", async (req, res) => {
+//   try {
+//     //desestruturando email e password de req.body
+//     const { email, password } = req.body;
+
+//     //procurando o email que o front enviou no body por alguma correspondência no nosso banco de dados
+//     const user = await UserModel.findOne({ email: email });
+
+//     //abaixo verificando se encontramos um user com o e-mail no sistema
+//     if (!user) {
+//       console.log();
+//       return res.status(404).json({ msg: "Email ou senha inválidos" });
+//     }
+
+//     if (await bcrypt.compare(password, user.passwordHash)) {
+//       const token = generateToken(user);
+
+//       return res.status(200).json({
+//         user: {
+//           username: user.username,
+//           name: user.name,
+//           email: user.email,
+//           _id: user._id,
+//           role: user.role,
+//         },
+//         token: token,
+//       });
+//     } else {
+//       return res.status(404).json({ msg: "Email ou senha inválidos" });
+//     }
+//   } catch (err) {
+//     console.log(err);
+//     return res.status(500).json(err);
+//   }
+// });
+
 userRouter.post("/login", async (req, res) => {
   try {
-    //desestruturando email e password de req.body
-    const { email, password } = req.body;
+    //desestruturando email/username e password de req.body
+    const { emailOrUsername, password } = req.body;
 
-    //procurando o email que o front enviou no body por alguma correspondência no nosso banco de dados
-    const user = await UserModel.findOne({ email: email });
+    //procurando o email ou username que o front enviou no body por alguma correspondência no nosso banco de dados
+    const user = await UserModel.findOne({
+      $or: [{ email: emailOrUsername }, { username: emailOrUsername }],
+    });
 
-    //abaixo verificando se encontramos um user com o e-mail no sistema
+    //abaixo verificando se encontramos um user com o email ou username no sistema
     if (!user) {
-      console.log();
-      return res.status(404).json({ msg: "Email ou senha inválidos" });
+      return res.status(404).json({ msg: "Email/username ou senha inválidos" });
     }
 
     if (await bcrypt.compare(password, user.passwordHash)) {
@@ -70,7 +107,7 @@ userRouter.post("/login", async (req, res) => {
         token: token,
       });
     } else {
-      return res.status(404).json({ msg: "Email ou senha inválidos" });
+      return res.status(404).json({ msg: "Email/username ou senha inválidos" });
     }
   } catch (err) {
     console.log(err);
