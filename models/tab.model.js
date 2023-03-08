@@ -3,7 +3,7 @@ import { model, Schema } from "mongoose";
 const tabSchema = new Schema(
   {
     title: { type: String, required: true, trim: true },
-    content: { type: String, required: true },
+    content: { type: String },
     authorId: { type: Schema.Types.ObjectId, ref: "User" }, // aqui estamos relacionando o id do user para quando criarmos um tab, colocarmos um author pra ele
     commentsId: [{ type: Schema.Types.ObjectId, ref: "Comment" }],
     favoriteUserId: [{ type: Schema.Types.ObjectId, ref: "User" }], //depois usaremos a propriedade size para contabilizar os likes
