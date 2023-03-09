@@ -173,13 +173,18 @@ userRouter.put("/", isAuth, attachCurrentUser, async (req, res) => {
 });
 
 userRouter.delete(
-  "/delete/:userId",
+  "/delete/:username",
   isAuth,
   attachCurrentUser,
   async (req, res) => {
     try {
-      const user = req.currentUser;
-      if (toString(req.params.userId) === toString(req.currentUser._id)) {
+      const user = await UserModel.findOne({
+        username: req.params.username,
+      });
+      if (
+        toString(req.params.username) ===
+        toString(req.currentUser.username || req.currentUser.role === "ADMIN")
+      ) {
         await TabModel.deleteMany({ authorId: user._id });
         await CommentModel.deleteMany({ authorId: user._id });
         //
