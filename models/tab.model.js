@@ -15,6 +15,7 @@ const tabSchema = new Schema(
     statusVisibility: { type: Boolean, default: true },
     viewsDetails: { type: Number, default: 0 },
     impressions: { type: Number, default: 0 },
+    relevance: { type: Number, default: 0 },
   },
   { timestamps: true }
 );
