@@ -59,7 +59,7 @@ tabRouter.get("/all-tabs", async (req, res) => {
   }
 });
 
-//get details
+//get details viewsDetails
 tabRouter.get("/details/:tabId", async (req, res) => {
   try {
     const tabDetails = await TabModel.findById(req.params.tabId)
@@ -79,6 +79,21 @@ tabRouter.get("/details/:tabId", async (req, res) => {
   } catch (err) {
     console.log(err);
     return res.status(404).json("Deu erro no get details irmão");
+  }
+});
+
+tabRouter.get("/views/:tabId", async (req, res) => {
+  try {
+    // Incrementa o valor da chave viewsDetails em 1
+    await TabModel.findOneAndUpdate(
+      { _id: req.params.tabId },
+      { $inc: { viewsDetails: 1 } }
+    );
+
+    return res.status(201).json(`Visualização somada`);
+  } catch (err) {
+    console.log(err);
+    return res.status(404).json("Visualização não contabilizada");
   }
 });
 
