@@ -21,8 +21,12 @@ const userSchema = new Schema(
     },
     tabsFavorited: [{ type: Schema.Types.ObjectId, ref: "Tab" }],
     tabsLiked: [{ type: Schema.Types.ObjectId, ref: "Tab" }],
-    following: [{ type: Schema.Types.ObjectId, ref: "User" }], //adicionado recentemente
+    following: [{ type: Schema.Types.ObjectId, ref: "User" }],
     follower: [{ type: Schema.Types.ObjectId, ref: "User" }],
+    aboutMe: { type: String, minlength: 0, maxlength: 200 },
+    externalURL: { type: String },
+    seniority: { type: String },
+    specialization: { type: String },
   },
   { timestamps: true }
 );
