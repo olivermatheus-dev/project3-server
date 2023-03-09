@@ -109,7 +109,7 @@ tabRouter.get("/category/relevant/:page", async (req, res) => {
   }
 });
 
-//sistema de pagainação
+//sistema de paginação
 tabRouter.get("/category/curtidos/:page", async (req, res) => {
   try {
     const page = parseInt(req.params.page) || 1;
@@ -144,30 +144,28 @@ tabRouter.get("/category/curtidos/:page", async (req, res) => {
   }
 });
 
-//rota de feed
-// tabRouter.get("/feed", isAuth, attachCurrentUser, async (req, res) => {
-//   try {
-//     const userId = req.currentUser.id;
+tabRouter.get("/home/:page", async (req, res) => {
+  try {
+    const page = parseInt(req.params.page) || 1;
+    const limit = parseInt(req.query.limit) || 20;
 
-//     const user = await UserModel.findById(userId).populate("following");
+    const startIndex = (page - 1) * limit;
+    const endIndex = page * limit;
 
-//     let tabs = [];
+    const tabs = await TabModel.find()
+      .populate({
+        path: "authorId",
+        select: "-passwordHash",
+      })
+      .skip(startIndex)
+      .limit(limit);
 
-//     for (let i = 0; i < user.following.length; i++) {
-//       const followingUser = user.following[i];
-//       const followingUserTabs = await TabModel.find({
-//         _id: { $in: followingUser.tabsId },
-//       }).populate("author");
-
-//       tabs = tabs.concat(followingUserTabs);
-//     }
-
-//     res.json({ tabs });
-//   } catch (error) {
-//     console.log(error);
-//     res.status(500).send("Internal server error");
-//   }
-// });
+    return res.status(200).json(tabs);
+  } catch (err) {
+    console.log(err);
+    return res.status(500).json("Erro ao buscar as tabs recentes");
+  }
+});
 
 tabRouter.get("/feed", isAuth, attachCurrentUser, async (req, res) => {
   try {

@@ -4,7 +4,7 @@ import jwt from "jsonwebtoken";
 export function generateToken(user) {
   const { _id, name, email, role, username } = user; //pegamos as chaves que queremos dentro de user (que recebemos por props)
   const signature = process.env.TOKEN_SIGN_SECRET; //aqui utilizamos uma assinatura (outra chave secreta do .env)
-  const expiration = "6h"; //prazo que o token expira (poderia ser em minutos tbm, ex: 20m)
+  const expiration = "365d"; //prazo que o token expira (poderia ser em minutos tbm, ex: 20m)
 
   return jwt.sign({ _id, name, email, role, username }, signature, {
     expiresIn: expiration,
