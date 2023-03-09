@@ -13,6 +13,9 @@ const tabSchema = new Schema(
     iconURL: { type: String, default: "Sem Icone" }, //definiremos na rota de criação do tab (fazer o if)
     tags: { type: String, default: "" },
     statusVisibility: { type: Boolean, default: true },
+    viewsDetails: { type: Number, default: 0 },
+    impressions: { type: Number, default: 0 },
+    relevance: { type: Number, default: 0 },
   },
   { timestamps: true }
 );
