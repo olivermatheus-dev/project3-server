@@ -115,21 +115,28 @@ userRouter.post("/login", async (req, res) => {
   }
 });
 
-userRouter.put("/update", isAuth, attachCurrentUser, async (req, res) => {
-  try {
-    const user = req.currentUser;
+userRouter.put(
+  "/update/:username",
+  isAuth,
+  attachCurrentUser,
+  async (req, res) => {
+    try {
+      const user = await UserModel.findOne({
+        username: req.params.username,
+      });
 
-    const userUpdated = await UserModel.findByIdAndUpdate(
-      user._id,
-      { user, ...req.body },
-      { new: true, runValidators: true }
-    );
-    return res.status(200).json(userUpdated);
-  } catch (error) {
-    console.log(error);
-    return res.status(500).json(error);
+      const userUpdated = await UserModel.findByIdAndUpdate(
+        user._id,
+        { user, ...req.body },
+        { new: true, runValidators: true }
+      );
+      return res.status(200).json(userUpdated);
+    } catch (error) {
+      console.log(error);
+      return res.status(500).json(error);
+    }
   }
-});
+);
 
 userRouter.get(
   "/profile/:username",
@@ -155,10 +162,10 @@ userRouter.get(
   }
 );
 
-userRouter.put("/", isAuth, attachCurrentUser, async (req, res) => {
+userRouter.put("/:username", isAuth, attachCurrentUser, async (req, res) => {
   try {
     const updatedUser = await UserModel.findOneAndUpdate(
-      { _id: req.currentUser._id },
+      { username: req.params.username },
       { ...req.body },
       { new: true, runValidators: true }
     );
