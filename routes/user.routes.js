@@ -193,6 +193,7 @@ userRouter.delete(
         toString(req.currentUser.username || req.currentUser.role === "ADMIN")
       ) {
         await TabModel.deleteMany({ authorId: user._id });
+        await TabModel.deleteMany({ likesUserId: user._id });
         await CommentModel.deleteMany({ authorId: user._id });
         //
         await UserModel.updateMany(
