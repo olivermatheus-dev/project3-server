@@ -4,6 +4,20 @@ import isAuth from "../middlewares/isAuth.js";
 import { UserModel } from "../models/user.model.js";
 import { TabModel } from "../models/tab.model.js";
 import { CommentModel } from "../models/comment.model.js";
+import Pusher from "pusher";
+
+const pusher = new Pusher({
+  appId: "1565962",
+  key: "07fcbd11feb1e589ab0e",
+  secret: "039fd018b816dd0a09bb",
+  cluster: "sa1",
+  useTLS: true,
+});
+
+const pushUpdate = (tabId) => {
+  pusher.trigger(`tab_${tabId}`, "update", {});
+  console.log("Tab comment update pushed", tabId);
+};
 
 const commentRouter = express.Router();
 
@@ -34,6 +48,8 @@ commentRouter.post(
       //     { new: true, runValidators: true }
       //   );
 
+      pushUpdate(req.params.tabId);
+
       return res.status(200).json("Comment criado com sucesso");
     } catch (err) {
       console.log(err);
@@ -63,6 +79,8 @@ commentRouter.delete(
         // await UserModel.findByIdAndUpdate(comment.authorId, {
         //   $pull: { commentsId: req.params.commentId },
         // });
+
+        pushUpdate(req.params.tabId);
 
         return res.status(200).json("Deletado com sucesso");
       }
