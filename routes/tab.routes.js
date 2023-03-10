@@ -144,7 +144,7 @@ tabRouter.get("/category/curtidos/:page", async (req, res) => {
   }
 });
 
-tabRouter.get("/home/:page", async (req, res) => {
+tabRouter.get("/home/", async (req, res) => {
   try {
     const page = parseInt(req.params.page) || 1;
     const limit = parseInt(req.query.limit) || 20;
@@ -152,13 +152,12 @@ tabRouter.get("/home/:page", async (req, res) => {
     const startIndex = (page - 1) * limit;
     const endIndex = page * limit;
 
-    const tabs = await TabModel.find()
-      .populate({
-        path: "authorId",
-        select: "-passwordHash",
-      })
-      .skip(startIndex)
-      .limit(limit);
+    const tabs = await TabModel.find().populate({
+      path: "authorId",
+      select: "-passwordHash",
+    });
+    // .skip(startIndex)
+    // .limit(limit);
 
     return res.status(200).json(tabs);
   } catch (err) {
