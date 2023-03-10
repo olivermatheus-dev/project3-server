@@ -25,7 +25,7 @@ Se trata de uma REST API com um CRUD completo nas rotas.
 
     POST /user/login
 
-**Update **
+**Update**
 
     PUT /user/update/:username
     
