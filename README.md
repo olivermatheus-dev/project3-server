@@ -5,6 +5,7 @@ Back-end do projeto  [Ceos Tab](https://github.com/olivermatheus-dev/project3-cl
 # Sobre
 
 O projeto foi criado para atender os requisitos do terceiro módulo do curso de **Web development** da **Ironhack**
+e inspirado no TabNews de Filipe Deschamps o qual todo o grupo acessa quase que diariamente.
 
 Se trata de uma REST API com um CRUD completo nas rotas.
 
