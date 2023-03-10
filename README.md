@@ -153,5 +153,6 @@ Abaixo o link do repositório do front da aplicação
 ## Utilizando em seu computador localmente
 Você pode rodar a aplicação em seu localhost, após clonar para seu computador.
 
-*Lembre de utilizar o npm install*
+**Lembre de utilizar o npm install**
+
 **Lembre de criar seu arquivo .env e atualizar como o  exemple.env**
